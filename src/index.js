@@ -31,5 +31,35 @@ app.post('/tasks', (req, res) => {
     .catch(err => res.status(400).send(err.message))
 })
 
+// @GET Request - Fetching Users
+app.get('/users', (req, res) => {
+  User.find({})
+    .then(users => res.status(302).json(users))
+    .catch(err => res.status(500).send(err.message))
+})
+
+// @GET Request - Fetching users by ID
+app.get('/users/:id', (req, res) => {
+  const _id = req.params.id
+  User.findById(_id)
+    .then(user => (!user ? res.status(404).send() : res.status(302).json(user)))
+    .catch(err => res.status(400).send(err.message))
+})
+
+// @GET Request - Fetching Users
+app.get('/tasks', (req, res) => {
+  Task.find({})
+    .then(tasks => res.status(302).send(tasks))
+    .catch(err => res.status(500).send(err.message))
+})
+
+// @GET Request /tasks/:idu , (req,ress )ers by ID
+app.get('/tasks/:id', (req, res) => {
+  _id = req.params.id
+  Task.findById(_id)
+    .then(task => (!task ? res.status(404).send() : res.status(302).send(task)))
+    .then(err => res.status(500).send(err))
+})
+
 // Starting up server
 app.listen(PORT, () => console.log(`Server is running on ${PORT}`))
