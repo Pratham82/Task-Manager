@@ -12,53 +12,71 @@ app.use(express.json())
 // Requests
 
 // @POST Request -  Creating users
-app.post('/users', (req, res) => {
+app.post('/users', async (req, res) => {
   // Creating user from the requested json object
   const user = new User(req.body)
 
-  user
-    .save()
-    .then(() => res.status(201).send(user))
-    .catch(err => res.status(400).send(err))
+  // Using async await
+  try {
+    await user.save()
+    res.status(201).send(user)
+  } catch (err) {
+    res.status(400).send(err.message)
+  }
 })
 
 // @POST Request - Creating Tasks
-app.post('/tasks', (req, res) => {
+app.post('/tasks', async (req, res) => {
   const task = new Task(req.body)
-  task
-    .save()
-    .then(() => res.status(201).send(task))
-    .catch(err => res.status(400).send(err.message))
+  try {
+    await task.save()
+    res.status(201).send(task)
+  } catch (err) {
+    res.status(400).send(err.message)
+  }
 })
 
 // @GET Request - Fetching Users
-app.get('/users', (req, res) => {
-  User.find({})
-    .then(users => res.status(302).json(users))
-    .catch(err => res.status(500).send(err.message))
+app.get('/users', async (req, res) => {
+  try {
+    const users = await User.find({})
+    res.status(200).send(users)
+  } catch (err) {
+    res.status(500).send(err.message)
+  }
 })
 
 // @GET Request - Fetching users by ID
-app.get('/users/:id', (req, res) => {
+app.get('/users/:id', async (req, res) => {
   const _id = req.params.id
-  User.findById(_id)
-    .then(user => (!user ? res.status(404).send() : res.status(302).json(user)))
-    .catch(err => res.status(400).send(err.message))
+  try {
+    const user = await User.findById(_id)
+    return !user ? res.status(404).send() : res.status(302).send(user)
+  } catch (err) {
+    res.status(400).send(err.message)
+  }
 })
 
-// @GET Request - Fetching Users
-app.get('/tasks', (req, res) => {
-  Task.find({})
-    .then(tasks => res.status(302).send(tasks))
-    .catch(err => res.status(500).send(err.message))
+// @GET Request - Fetching Tasks
+app.get('/tasks', async (req, res) => {
+  try {
+    const tasks = await Task.find({})
+    res.status(200).send(tasks)
+  } catch (err) {
+    res.status(500).send(err.message)
+  }
 })
 
-// @GET Request /tasks/:idu , (req,ress )ers by ID
-app.get('/tasks/:id', (req, res) => {
-  _id = req.params.id
-  Task.findById(_id)
-    .then(task => (!task ? res.status(404).send() : res.status(302).send(task)))
-    .then(err => res.status(500).send(err))
+// @GET Request task by ID
+app.get('/tasks/:id', async (req, res) => {
+  const _id = req.params.id
+
+  try {
+    const task = await Task.findById(_id)
+    return !task ? res.status(404).send() : res.status(201).send(task)
+  } catch (err) {
+    res.status(500).send(err.message)
+  }
 })
 
 // Starting up server
