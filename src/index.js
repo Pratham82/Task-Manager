@@ -2,6 +2,7 @@ const express = require('express')
 require('./db/mongoose')
 const User = require('./models/user')
 const Task = require('./models/task')
+const { findOneAndUpdate, findByIdAndUpdate } = require('./models/user')
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -9,8 +10,7 @@ const PORT = process.env.PORT || 3000
 // Parsing the JSON using express
 app.use(express.json())
 
-// Requests
-
+//******* User endpoints ********
 // @POST Request -  Creating users
 app.post('/users', async (req, res) => {
   // Creating user from the requested json object
@@ -20,17 +20,6 @@ app.post('/users', async (req, res) => {
   try {
     await user.save()
     res.status(201).send(user)
-  } catch (err) {
-    res.status(400).send(err.message)
-  }
-})
-
-// @POST Request - Creating Tasks
-app.post('/tasks', async (req, res) => {
-  const task = new Task(req.body)
-  try {
-    await task.save()
-    res.status(201).send(task)
   } catch (err) {
     res.status(400).send(err.message)
   }
@@ -52,6 +41,42 @@ app.get('/users/:id', async (req, res) => {
   try {
     const user = await User.findById(_id)
     return !user ? res.status(404).send() : res.status(302).send(user)
+  } catch (err) {
+    res.status(400).send(err.message)
+  }
+})
+
+// @PATCH Request - Update the user
+app.patch('/users/:id', async (req, res) => {
+  const allowedUpdates = ['age', 'name', 'email', 'password']
+  const updates = Object.keys(req.body)
+  const isValidOperations = updates.every(update =>
+    allowedUpdates.includes(update)
+  )
+
+  if (!isValidOperations) {
+    return res.status(400).send({ error: 'Invalid Update not allowed' })
+  }
+
+  try {
+    // Here the first parameter is the ID to find, 2nd is the new data that we want to update and third are the options.
+    const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    })
+    return !user ? res.status(404).send() : res.status(200).send(user)
+  } catch (err) {
+    res.status(400).send(err)
+  }
+})
+
+//****** Task Endpoints ********
+// @POST Request - Creating Tasks
+app.post('/tasks', async (req, res) => {
+  const task = new Task(req.body)
+  try {
+    await task.save()
+    res.status(201).send(task)
   } catch (err) {
     res.status(400).send(err.message)
   }
