@@ -104,5 +104,24 @@ app.get('/tasks/:id', async (req, res) => {
   }
 })
 
+// @PATCH Request - Updating the Tasks
+app.patch('/tasks/:id', async (req, res) => {
+  const allowedTasks = ['description', 'status']
+  const taskUpdates = Object.keys(req.body)
+  const validateTasks = taskUpdates.every(task => allowedTasks.includes(task))
+  if (!validateTasks) {
+    return res.status(400).send({ error: 'Invalid update not allowed' })
+  }
+  try {
+    const newTask = await Task.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    })
+    return !newTask ? res.status(404).send() : res.status(200).send(newTask)
+  } catch (err) {
+    res.status(400).send(err)
+  }
+})
+
 // Starting up server
 app.listen(PORT, () => console.log(`Server is running on ${PORT}`))
