@@ -70,6 +70,16 @@ app.patch('/users/:id', async (req, res) => {
   }
 })
 
+// @DELTE Request - Delete user
+app.delete('/users/:id', async (req, res) => {
+  try {
+    const user = await User.findByIdAndDelete(req.params.id)
+    return !user ? res.status(404).send() : res.status(200).send(user)
+  } catch (err) {
+    res.status(500).send(err)
+  }
+})
+
 //****** Task Endpoints ********
 // @POST Request - Creating Tasks
 app.post('/tasks', async (req, res) => {
@@ -120,6 +130,18 @@ app.patch('/tasks/:id', async (req, res) => {
     return !newTask ? res.status(404).send() : res.status(200).send(newTask)
   } catch (err) {
     res.status(400).send(err)
+  }
+})
+
+// @DELETE Request - Deleting the task
+app.delete('/tasks/:id', async (req, res) => {
+  try {
+    const task = await Task.findByIdAndDelete(req.params.id)
+    return !task
+      ? res.status(404).send({ message: 'Task with Given ID is not present' })
+      : res.status(200).send(task)
+  } catch (err) {
+    res.status(500).send(err)
   }
 })
 
