@@ -1,0 +1,42 @@
+[
+  {
+    "age": 35,
+    "_id": "5fba2dbef1d3d050bdb17c45",
+    "name": "John Snow",
+    "email": "johns@gmail.com",
+    "password": "john!%^25@#$",
+    "__v": 0
+  },
+  {
+    "age": 38,
+    "_id": "5fba2ddcf1d3d050bdb17c46",
+    "name": "Rob Stark",
+    "email": "rob@gmail.com",
+    "password": "rob22325@#$",
+    "__v": 0
+  },
+  {
+    "age": 50,
+    "_id": "5fba2dfaf1d3d050bdb17c47",
+    "name": "Dwayne Johnson",
+    "email": "rock@gmail.com",
+    "password": "rofd#$#533",
+    "__v": 0
+  },
+  {
+    "age": 40,
+    "_id": "5fba2e0ef1d3d050bdb17c48",
+    "name": "Tim Smith",
+    "email": "tim23@gmail.com",
+    "password": "rtid#$#533",
+    "__v": 0
+  },
+  {
+    "age": 56,
+    "_id": "5fba2e23f1d3d050bdb17c49",
+    "name": "Joe Rogan",
+    "email": "joe323@gmail.com",
+    "password": "joe#$fgfg#533",
+    "__v": 0
+  }
+]
