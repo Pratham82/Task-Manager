@@ -15,15 +15,18 @@ app.use('/tasks', require('./routers/task'))
 app.listen(PORT, () => console.log(`Server is running on ${PORT}`))
 
 const bcrypt = require('bcrypt')
-const myFunc = async password => {
-  // Hashing password
-  const hashedPass = await bcrypt.hash(password, 8)
-  console.log(password)
-  console.log(hashedPass)
+const jwt = require('jsonwebtoken')
+const myFunc = async () => {
+  // Creating a token
+  const token = jwt.sign({ _id: 'sdsd866' }, 'secretkey', {
+    expiresIn: '7 days',
+  })
 
-  // Comparing hashes
-  const matchedVal = await bcrypt.compare('Red12345', hashedPass)
-  console.log(matchedVal ? 'Passowrd Matched' : 'Passwords do not match')
+  // Verify the token
+  const data = jwt.verify(token, 'secretkey')
+
+  console.log(token)
+  console.log(data._id === 'sdsd866')
 }
 
 myFunc('Red1234545')
