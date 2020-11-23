@@ -6,8 +6,9 @@ const createUser = async (req, res) => {
 
   // Using async await
   try {
+    const token = await user.generateAuthToken()
     await user.save()
-    res.status(201).send(user)
+    res.status(201).send({ user, token })
   } catch (err) {
     res.status(400).send(err.message)
   }
@@ -26,10 +27,11 @@ const getUsers = async (req, res) => {
 const loginUser = async (req, res) => {
   try {
     const user = await User.findByCredentials(req.body.email, req.body.password)
+    const token = await user.generateAuthToken()
     /*  return !user
       ? res.status(400).send('Wrong Credentials')
       : res.status(200).send('Successfully logged in')*/
-    res.status(200).send(user)
+    res.status(200).send({ user, token })
   } catch (err) {
     res.status(400).send(err)
   }
