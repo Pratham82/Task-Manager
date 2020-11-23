@@ -12,6 +12,7 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
+    unique: true,
     trim: true,
     lowercase: true,
     validate(val) {
@@ -44,6 +45,25 @@ const userSchema = new mongoose.Schema({
 
 // Setting up a middleware with userSchema
 
+// Creating our own method for login
+userSchema.statics.findByCredentials = async (email, password) => {
+  const user = await User.findOne({ email })
+
+  // Check if the user with that email exists or not
+  if (!user) {
+    throw new Error('Unable to login')
+  }
+
+  // Compare passwords
+  const validatePassword = await bcrypt.compare(password, user.password)
+  if (!validatePassword) {
+    throw new Error('Unable to login')
+  }
+
+  return user
+}
+
+// Hashing the plain text password before saving
 userSchema.pre('save', async function (next) {
   // Instead of using "this" everywhere we will declare it once
   const user = this

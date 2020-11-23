@@ -23,6 +23,18 @@ const getUsers = async (req, res) => {
   }
 }
 
+const loginUser = async (req, res) => {
+  try {
+    const user = await User.findByCredentials(req.body.email, req.body.password)
+    /*  return !user
+      ? res.status(400).send('Wrong Credentials')
+      : res.status(200).send('Successfully logged in')*/
+    res.status(200).send(user)
+  } catch (err) {
+    res.status(400).send(err)
+  }
+}
+
 const getUser = async (req, res) => {
   try {
     const users = await User.find({})
@@ -44,12 +56,6 @@ const updateUser = async (req, res) => {
   }
 
   try {
-    // Here the first parameter is the ID to find, 2nd is the new data that we want to update and third are the options.
-    /*const user = await User.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    })*/
-
     // Dynamically changing the data from the database (For using the middleware)
     // Find the user by ID
     const user = await User.findById(req.params.id)
@@ -75,4 +81,11 @@ const deleteUser = async (req, res) => {
   }
 }
 
-module.exports = { createUser, getUsers, getUser, updateUser, deleteUser }
+module.exports = {
+  createUser,
+  loginUser,
+  getUsers,
+  getUser,
+  updateUser,
+  deleteUser,
+}
