@@ -38,5 +38,97 @@
     "email": "joe323@gmail.com",
     "password": "joe#$fgfg#533",
     "__v": 0
+  },
+  {
+    "age": 38,
+    "_id": "5fba2ddcf1d3d050bdb17c46",
+    "name": "Rob Stark",
+    "email": "rob@gmail.com",
+    "password": "rob22325@#$",
+    "__v": 0
+  },
+  {
+    "age": 50,
+    "_id": "5fba2dfaf1d3d050bdb17c47",
+    "name": "Dwayne Johnson",
+    "email": "rock@gmail.com",
+    "password": "rofd#$#533",
+    "__v": 0
+  },
+  {
+    "age": 40,
+    "_id": "5fba2e0ef1d3d050bdb17c48",
+    "name": "Tim Smith",
+    "email": "tim23@gmail.com",
+    "password": "rtid#$#533",
+    "__v": 0
+  },
+  {
+    "age": 56,
+    "_id": "5fba2f10386fed536b457e0a",
+    "name": "Joe Rogan",
+    "email": "joe323@gmail.com",
+    "password": "joe#$fgfg#533",
+    "__v": 0
+  },
+  {
+    "age": 32,
+    "_id": "5fba3b31cc2af4727b366fcf",
+    "name": "John Snow",
+    "email": "johns@gmail.com",
+    "password": "john#sdfdf%%",
+    "__v": 0
+  },
+  {
+    "age": 30,
+    "_id": "5fbb4b39a8c389202310e581",
+    "name": "Jose 3 Z",
+    "email": "jose@gmail.com",
+    "password": "johhedsd",
+    "__v": 0
+  },
+  {
+    "age": 28,
+    "_id": "5fbb52670c5d342d4e5d0828",
+    "name": "Jeffrey  Archer",
+    "email": "jef@gmail.com",
+    "password": "$2b$08$MFwsz9zPN/jeFL/oCi9zA.CsQapgBeSFxPjGE711dtjdixWNMyOgG",
+    "__v": 0
+  },
+  {
+    "status": true,
+    "_id": "5fb8dfe149273e81855cd7b4",
+    "description": "Complete NodeJS tutorial Update 222",
+    "__v": 0
+  },
+  {
+    "status": true,
+    "_id": "5fb90acd5e7f3c9d2080818e",
+    "description": "Workout 6 days a week",
+    "__v": 0
+  },
+  {
+    "status": false,
+    "_id": "5fb90ad85e7f3c9d2080818f",
+    "description": "Learn TypeScript",
+    "__v": 0
+  },
+  {
+    "status": false,
+    "_id": "5fb915d5e3f9f7c05b38717a",
+    "description": "Complete Memories Project",
+    "__v": 0
+  },
+  {
+    "status": false,
+    "_id": "5fb915e1e3f9f7c05b38717b",
+    "description": "Complete Gatsby tutorial",
+    "__v": 0
+  },
+  {
+    "status": false,
+    "_id": "5fba41866d73148728a7fdae",
+    "description": "new Udpate 4",
+    "__v": 0
   }
 ]
