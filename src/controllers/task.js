@@ -32,17 +32,23 @@ const getTask = async (req, res) => {
 
 const updateTask = async (req, res) => {
   const allowedTasks = ['description', 'status']
-  const taskUpdates = Object.keys(req.body)
-  const validateTasks = taskUpdates.every(task => allowedTasks.includes(task))
+  const updates = Object.keys(req.body)
+  const validateTasks = updates.every(update => allowedTasks.includes(update))
+
   if (!validateTasks) {
     return res.status(400).send({ error: 'Invalid update not allowed' })
   }
+
   try {
-    const newTask = await Task.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    })
-    return !newTask ? res.status(404).send() : res.status(200).send(newTask)
+    //Refactoring the udpate method, incase we have to add the middleware, so breaking the down the udpate first finding the task by the id and then  updating
+    const task = await Task.findById(req.params.id)
+    // Here we are replacing the old tasks with the new tasks
+    updates.forEach(update => (task[update] = req.body[update]))
+
+    // Save the new task
+    await task.save()
+
+    return !task ? res.status(404).send() : res.status(200).send(task)
   } catch (err) {
     res.status(400).send(err)
   }
