@@ -14,7 +14,7 @@ const createUser = async (req, res) => {
   }
 }
 
-const getUsers = async (req, res) => {
+const getUser = async (req, res) => {
   const _id = req.params.id
   try {
     const user = await User.findById(_id)
@@ -37,13 +37,16 @@ const loginUser = async (req, res) => {
   }
 }
 
-const getUser = async (req, res) => {
+const getUsers = async (req, res) => {
+  /*
   try {
     const users = await User.find({})
     res.status(200).send(users)
   } catch (err) {
     res.status(500).send(err.message)
   }
+  */
+  res.send(req.user)
 }
 
 const updateUser = async (req, res) => {

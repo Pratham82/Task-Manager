@@ -8,6 +8,7 @@ const {
   loginUser,
 } = require('../controllers/user')
 const router = new express.Router()
+const auth = require('../middlewares/auth')
 
 //******* User endpoints ********
 
@@ -18,10 +19,10 @@ router.post('/', createUser)
 router.post('/login', loginUser)
 
 // @GET Request - Fetching all users
-router.get('/', getUser)
+router.get('/me', auth, getUsers)
 
 // @GET Request - Fetching user by ID
-router.get('/:id', getUsers)
+router.get('/:id', getUser)
 
 // @PATCH Request - Updating the user
 router.patch('/:id', updateUser)
