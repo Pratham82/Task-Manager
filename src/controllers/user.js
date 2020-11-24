@@ -91,15 +91,18 @@ const updateUser = async (req, res) => {
   try {
     // Dynamically changing the data from the database (For using the middleware)
     // Find the user by ID
-    const user = await User.findById(req.params.id)
+    //    const user = await User.findById(req.params._id)
 
     // Update every property given in the body with that specific user
-    updates.map(update => (user[update] = req.body[update]))
+    updates.map(update => (req.user[update] = req.body[update]))
 
     //Wait till the user is updated, Out middleware will be executed here
-    await user.save()
+    await req.user.save()
 
-    return !user ? res.status(404).send() : res.status(200).send(user)
+    //return !user ? res.status(404).send() : res.status(200).send(user)
+    res
+      .status(200)
+      .send({ message: 'User updated successfully', user: req.user })
   } catch (err) {
     res.status(400).send(err)
   }
@@ -107,8 +110,11 @@ const updateUser = async (req, res) => {
 
 const deleteUser = async (req, res) => {
   try {
-    const user = await User.findByIdAndDelete(req.params.id)
-    return !user ? res.status(404).send() : res.status(200).send(user)
+    //  const user = await User.findByIdAndDelete(req.params._id)
+    //    return !user ? res.status(404).send() : res.status(200).send(user)
+
+    await req.user.remove()
+    res.send(req.user)
   } catch (err) {
     res.status(500).send(err)
   }

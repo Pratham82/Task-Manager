@@ -33,9 +33,9 @@ router.get('/me', auth, getUsers)
 router.get('/:id', getUser)
 
 // @PATCH Request - Updating the user
-router.patch('/:id', updateUser)
+router.patch('/me', auth, updateUser)
 
 // @DELTE Request - Deleting the user
-router.delete('/:id', deleteUser)
+router.delete('/:me', auth, deleteUser)
 
 module.exports = router
