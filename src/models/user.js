@@ -101,6 +101,15 @@ userSchema.pre('save', async function (next) {
   next()
 })
 
+// Hide critical info from sending, send only public info
+userSchema.methods.toJSON = function () {
+  const user = this
+  const userObject = user.toObject()
+  delete userObject.password
+  delete userObject.tokens
+  return userObject
+}
+
 // Creating User model with validations
 const User = mongoose.model('User', userSchema)
 module.exports = User
