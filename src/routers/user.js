@@ -6,6 +6,8 @@ const {
   deleteUser,
   getUser,
   loginUser,
+  logOut,
+  logOutAll,
 } = require('../controllers/user')
 const router = new express.Router()
 const auth = require('../middlewares/auth')
@@ -18,7 +20,13 @@ router.post('/', createUser)
 // @POST Reques - Log in
 router.post('/login', loginUser)
 
-// @GET Request - Fetching all users
+// @POST Request  - Logout
+router.post('/logout', auth, logOut)
+
+// @POST Request - Logout from all accounts, deleting all tokens
+router.post('/logOutAll', auth, logOutAll)
+
+// @GET Request - Sending the user who is logged in
 router.get('/me', auth, getUsers)
 
 // @GET Request - Fetching user by ID

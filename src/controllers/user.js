@@ -37,6 +37,34 @@ const loginUser = async (req, res) => {
   }
 }
 
+const logOut = async (req, res) => {
+  try {
+    // Remove the current token that is used by the user
+    req.user.tokens = req.user.tokens.filter(token => {
+      return token.token !== req.token
+    })
+
+    //Save changes to DB
+    await req.user.save()
+    res.send({ messgae: 'Successfully Logged out' })
+  } catch (err) {
+    res.status(500).send()
+  }
+}
+
+const logOutAll = async (req, res) => {
+  try {
+    // Removing all user tokens
+    req.user.tokens = []
+
+    // Save changes to DB
+    await req.user.save()
+    res.send({ message: 'All tokens removed' })
+  } catch (err) {
+    res.status(500).send()
+  }
+}
+
 const getUsers = async (req, res) => {
   /*
   try {
@@ -89,8 +117,10 @@ const deleteUser = async (req, res) => {
 module.exports = {
   createUser,
   loginUser,
+  logOut,
   getUsers,
   getUser,
   updateUser,
   deleteUser,
+  logOutAll,
 }
