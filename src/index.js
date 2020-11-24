@@ -34,20 +34,3 @@ app.use('/tasks', require('./routers/task'))
 
 // Starting up server
 app.listen(PORT, () => console.log(`Server is running on ${PORT}`))
-
-const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
-const myFunc = async () => {
-  // Creating a token
-  const token = jwt.sign({ _id: 'sdsd866' }, 'secretkey', {
-    expiresIn: '7 days',
-  })
-
-  // Verify the token
-  const data = jwt.verify(token, 'secretkey')
-
-  //  console.log(token)
-  //console.log(data._id === 'sdsd866')
-}
-
-myFunc('Red1234545')
