@@ -19,9 +19,8 @@ const auth = async (req, res, next) => {
 
     // Passing the user value to the route handlers
     req.user = user
+    req.token = token
     next()
-
-    console.log(token)
   } catch (err) {
     res.status(401).send({ error: 'Please authenticate' })
   }
