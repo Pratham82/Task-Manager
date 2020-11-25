@@ -1,7 +1,11 @@
 const Task = require('../models/task')
 
 const createTask = async (req, res) => {
-  const task = new Task(req.body)
+  //Saving the task with userID
+  const task = new Task({
+    ...req.body,
+    owner: req.user._id,
+  })
   try {
     await task.save()
     res.status(201).send(task)
