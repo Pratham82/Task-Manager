@@ -52,6 +52,13 @@ const userSchema = new mongoose.Schema({
   ],
 })
 
+// Creating virtual property (It's not actual data stored on the DB) its a relationship between two entities, in this case its between user and the tasks
+userSchema.virtual('tasks', {
+  ref: 'Task',
+  localField: '_id', // Its the filed where local data is stored
+  foreignField: 'owner', //Name on the fieled of the other colleciton
+})
+
 // Setting up a middleware with userSchema
 
 // Method for creating access token
