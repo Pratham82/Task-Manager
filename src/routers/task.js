@@ -16,15 +16,15 @@ const {
 router.post('/', auth, createTask)
 
 // @GET Request - Fetching all Tasks
-router.get('/', getTasks)
+router.get('/', auth, getTasks)
 
 // @GET Request - Find the task by ID
-router.get('/:id', getTask)
+router.get('/:id', auth, getTask)
 
 // @PATCH Request - Updating the Tasks
-router.patch('/:id', updateTask)
+router.patch('/:id', auth, updateTask)
 
 // @DELETE Request - Deleting the task
-router.delete('/:id', deleteTask)
+router.delete('/:id', auth, deleteTask)
 
 module.exports = router

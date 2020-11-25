@@ -16,7 +16,11 @@ const createTask = async (req, res) => {
 
 const getTasks = async (req, res) => {
   try {
-    const tasks = await Task.find({})
+    // Method 2:
+    // await user.populate('tasks'),execPopulate()
+    // res.send(req.user.tasks)
+    const tasks = await Task.find({ owner: req.user._id })
+
     res.status(200).send(tasks)
   } catch (err) {
     res.status(500).send(err.message)
@@ -25,10 +29,13 @@ const getTasks = async (req, res) => {
 
 const getTask = async (req, res) => {
   const _id = req.params.id
-
   try {
-    const task = await Task.findById(_id)
-    return !task ? res.status(404).send() : res.status(201).send(task)
+    const task = await Task.findOne({ _id, owner: req.user._id })
+    //    return !task ? res.status(404).send() : res.status(201).send(task)
+    if (!task) {
+      return res.status(404).send()
+    }
+    res.send(task)
   } catch (err) {
     res.status(500).send(err.message)
   }
@@ -45,7 +52,10 @@ const updateTask = async (req, res) => {
 
   try {
     //Refactoring the udpate method, incase we have to add the middleware, so breaking the down the udpate first finding the task by the id and then  updating
-    const task = await Task.findById(req.params.id)
+    //const task = await Task.findById(req.params.id)
+    // Allow only the users of the tasks to update
+    const task = await Task.findOne({ _id: req.params.id, owner: req.user._id })
+
     // Here we are replacing the old tasks with the new tasks
     updates.forEach(update => (task[update] = req.body[update]))
 
@@ -60,7 +70,12 @@ const updateTask = async (req, res) => {
 
 const deleteTask = async (req, res) => {
   try {
-    const task = await Task.findByIdAndDelete(req.params.id)
+    //const task = await Task.findByIdAndDelete(req.params.id)
+    const task = await Task.findOneAndDelete({
+      _id: req.params.id,
+      owner: req.user._id,
+    })
+
     return !task
       ? res.status(404).send({ message: 'Task with Given ID is not present' })
       : res.status(200).send(task)

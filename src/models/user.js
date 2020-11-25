@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const validator = require('validator')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const Task = require('./task')
 
 // Creating a seperate schema
 const userSchema = new mongoose.Schema({
@@ -116,6 +117,13 @@ userSchema.methods.toJSON = function () {
   delete userObject.tokens
   return userObject
 }
+
+// Delete User tasks when user is removed
+userSchema.pre('remove', async function (next) {
+  const user = this
+  await Task.deleteMany({ owner: user._id })
+  next()
+})
 
 // Creating User model with validations
 const User = mongoose.model('User', userSchema)
