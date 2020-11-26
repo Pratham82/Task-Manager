@@ -16,10 +16,15 @@ const createTask = async (req, res) => {
 
 const getTasks = async (req, res) => {
   const match = {}
+  const sort = {}
   req.query.status ? (match.status = req.query.status === 'true') : 0
   /*if (req.query.status) {
     match.status = req.query.status === 'true'
   }*/
+  if (req.query.sortBy) {
+    const sortRequest = req.query.sortBy.split(':')
+    sort[sortRequest[0]] = sortRequest[1] === 'desc' ? -1 : 1
+  }
   try {
     await req.user
       .populate({
@@ -28,6 +33,7 @@ const getTasks = async (req, res) => {
         options: {
           limit: parseInt(req.query.limit),
           skip: parseInt(req.query.skip),
+          sort,
         },
       })
       .execPopulate()
