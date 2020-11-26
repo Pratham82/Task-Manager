@@ -15,13 +15,22 @@ const createTask = async (req, res) => {
 }
 
 const getTasks = async (req, res) => {
+  const match = {}
+  req.query.status ? (match.status = req.query.status === 'true') : 0
+  /*if (req.query.status) {
+    match.status = req.query.status === 'true'
+  }*/
   try {
+    await req.user
+      .populate({
+        path: 'tasks',
+        match,
+      })
+      .execPopulate()
+    res.send(req.user.tasks)
     // Method 2:
-    // await user.populate('tasks'),execPopulate()
-    // res.send(req.user.tasks)
-    const tasks = await Task.find({ owner: req.user._id })
-
-    res.status(200).send(tasks)
+    //const tasks = await Task.find({ owner: req.user._id })
+    //res.status(200).send(tasks)
   } catch (err) {
     res.status(500).send(err.message)
   }
