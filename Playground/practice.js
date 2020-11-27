@@ -47,4 +47,32 @@ const main = async () => {
   console.log(user.tasks)
 }
 
+// File upload in express
+const multer = require('multer')
+const upload = new multer({
+  dest: 'images',
+  limits: {
+    fileSize: 1000000,
+  },
+  fileFilter(req, file, callback) {
+    if (!file.originalname.match(/\.(doc|docx)$/)) {
+      return callback(new Error('Please upload a Word documenr'))
+    }
+
+    callback(undefined, true)
+  },
+})
+
+const errorMiddleware = (req, res, next) => {
+  throw new Error('From my middleware')
+}
+app.post(
+  '/upload',
+  upload.single('upload'),
+  (req, res) => res.send(),
+  (err, req, res, next) => {
+    res.status(400).send({ error: err.message })
+  }
+)
+
 //main()

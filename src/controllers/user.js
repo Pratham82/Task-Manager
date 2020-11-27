@@ -120,6 +120,30 @@ const deleteUser = async (req, res) => {
   }
 }
 
+const deleteAvatar = async (req, res) => {
+  try {
+    req.user.avatar = undefined
+    await req.user.save()
+    res.status(200).send({ message: 'Avatar Deleted' })
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+const getAvatar = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id)
+    if (!user || !user.avatar) {
+      throw new Error()
+    } else {
+      res.set('Content-Type', 'image/png')
+      res.status(200).send(user.avatar)
+    }
+  } catch (err) {
+    res.status(400).send()
+  }
+}
+
 module.exports = {
   createUser,
   loginUser,
@@ -129,4 +153,6 @@ module.exports = {
   updateUser,
   deleteUser,
   logOutAll,
+  deleteAvatar,
+  getAvatar,
 }

@@ -8,12 +8,15 @@ const {
   loginUser,
   logOut,
   logOutAll,
+  deleteAvatar,
+  getAvatar,
 } = require('../controllers/user')
 const router = new express.Router()
 const auth = require('../middlewares/auth')
+const sharp = require('sharp')
+
 const multer = require('multer')
 const upload = new multer({
-  dest: 'avatars',
   limits: {
     fileSize: 1000000,
   },
@@ -41,12 +44,24 @@ router.post('/logOutAll', auth, logOutAll)
 // @POST Request - Endpoint for avatar upload
 router.post(
   '/me/avatar',
+  auth,
   upload.single('avatar'),
-  (req, res) => res.send(),
+  async (req, res) => {
+    const buffer = await sharp(req.file.buffer)
+      .resize({ width: 250, height: 250 })
+      .png()
+      .toBuffer()
+    req.user.avatar = buffer
+    await req.user.save()
+    res.send()
+  },
   (err, req, res, next) => {
     res.status(400).send({ error: err.message })
   }
 )
+
+// @GET Request - Get avatars
+router.get('/:id/avatar', getAvatar)
 
 // @GET Request - Sending the user who is logged in
 router.get('/me', auth, getUsers)
@@ -59,5 +74,8 @@ router.patch('/me', auth, updateUser)
 
 // @DELTE Request - Deleting the user
 router.delete('/:me', auth, deleteUser)
+
+// @DELTE - Delete avatar
+router.delete('/me/avatar', auth, deleteAvatar)
 
 module.exports = router
