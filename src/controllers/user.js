@@ -120,6 +120,8 @@ const deleteUser = async (req, res) => {
   }
 }
 
+const uploadAvatar = (req, res) => res.send()
+
 module.exports = {
   createUser,
   loginUser,
@@ -129,4 +131,5 @@ module.exports = {
   updateUser,
   deleteUser,
   logOutAll,
+  uploadAvatar,
 }

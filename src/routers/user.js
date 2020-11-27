@@ -8,9 +8,22 @@ const {
   loginUser,
   logOut,
   logOutAll,
+  uploadAvatar,
 } = require('../controllers/user')
 const router = new express.Router()
 const auth = require('../middlewares/auth')
+const multer = require('multer')
+const upload = new multer({
+  dest: 'avatars',
+  limits: {
+    fileSize: 1000000,
+  },
+  fileFilter(req, file, callback) {
+    return !file.originalname.match(/\.(jpg|jpeg|png)$/)
+      ? callback(new Error('Please upload images only.'))
+      : callback(undefined, true)
+  },
+})
 
 //******* User endpoints ********
 
@@ -25,6 +38,9 @@ router.post('/logout', auth, logOut)
 
 // @POST Request - Logout from all accounts, deleting all tokens
 router.post('/logOutAll', auth, logOutAll)
+
+// @POST Request - Endpoint for avatar upload
+router.post('/me/avatar', upload.single('avatar'), uploadAvatar)
 
 // @GET Request - Sending the user who is logged in
 router.get('/me', auth, getUsers)
