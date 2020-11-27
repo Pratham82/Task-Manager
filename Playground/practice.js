@@ -10,6 +10,27 @@ pet.toJSON = function () {
 console.log(JSON.stringify(pet))
 console.log(JSON.stringify(pet))
 
+// Register a new middleware function
+// Middleware methods will be run before it goes to the route handlers
+
+/*app.use((req, res, next) => {
+  // We can filter the routes which users can acccess
+  if (req.method === 'GET') {
+    //GET requests should be private
+    res.send({ message: 'GET Requests are disabled' })
+  } else {
+    next()
+  }
+})*/
+
+/*
+// Creating a middleware for maintenance mode
+app.use((req, res, next) => {
+  // Dont allow any requests in the maintenance
+  res.status(503).send('Site is under maintenance mode')
+})
+*/
+
 const Task = require('./models/task')
 const User = require('./models/user')
 const main = async () => {
