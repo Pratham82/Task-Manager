@@ -8,7 +8,6 @@ const {
   loginUser,
   logOut,
   logOutAll,
-  uploadAvatar,
 } = require('../controllers/user')
 const router = new express.Router()
 const auth = require('../middlewares/auth')
@@ -40,7 +39,14 @@ router.post('/logout', auth, logOut)
 router.post('/logOutAll', auth, logOutAll)
 
 // @POST Request - Endpoint for avatar upload
-router.post('/me/avatar', upload.single('avatar'), uploadAvatar)
+router.post(
+  '/me/avatar',
+  upload.single('avatar'),
+  (req, res) => res.send(),
+  (err, req, res, next) => {
+    res.status(400).send({ error: err.message })
+  }
+)
 
 // @GET Request - Sending the user who is logged in
 router.get('/me', auth, getUsers)

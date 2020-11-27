@@ -20,7 +20,17 @@ const upload = new multer({
   },
 })
 
-//app.post('/upload', upload.single('upload'), (req, res) => res.send())
+const errorMiddleware = (req, res, next) => {
+  throw new Error('From my middleware')
+}
+app.post(
+  '/upload',
+  upload.single('upload'),
+  (req, res) => res.send(),
+  (err, req, res, next) => {
+    res.status(400).send({ error: err.message })
+  }
+)
 
 // Parsing the JSON using express
 app.use(express.json())
