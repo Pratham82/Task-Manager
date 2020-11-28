@@ -1,4 +1,5 @@
 const User = require('../models/user')
+const { sendWelcomEmail, sendCanEmail } = require('../emails/accounts')
 
 const createUser = async (req, res) => {
   // Creating user from the requested json object
@@ -8,6 +9,7 @@ const createUser = async (req, res) => {
   try {
     const token = await user.generateAuthToken()
     await user.save()
+    sendWelcomEmail(user.name, user.email)
     res.status(201).send({ user, token })
   } catch (err) {
     res.status(400).send(err.message)
@@ -114,6 +116,7 @@ const deleteUser = async (req, res) => {
     //    return !user ? res.status(404).send() : res.status(200).send(user)
 
     await req.user.remove()
+    sendCanEmail(req.user.name, req.user.email)
     res.send(req.user)
   } catch (err) {
     res.status(500).send(err)
