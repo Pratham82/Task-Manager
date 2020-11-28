@@ -1,8 +1,9 @@
 const express = require('express')
 require('./db/mongoose')
+require('dotenv').config()
 
 const app = express()
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT
 
 // Parsing the JSON using express
 app.use(express.json())
